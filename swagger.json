@@ -1,0 +1,404 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BomBom Production Line API",
+    "description": "API definition for BomBom Production Line",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/DeliveryOrder/{id}": {
+      "get": {
+        "tags": [
+          "DeliveryOrder"
+        ],
+        "summary": "Retrieve a Delivery Order",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of the delivery order",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeliveryOrder"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeliveryOrder"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeliveryOrder"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Production/{productionUuid}/DeliveryOrders": {
+      "get": {
+        "tags": [
+          "DeliveryOrder"
+        ],
+        "summary": "Retrieves a list of DeliveryOrders based on productionUuid",
+        "parameters": [
+          {
+            "name": "productionUuid",
+            "in": "path",
+            "description": "UUID of the production file",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeliveryOrder"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeliveryOrder"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DeliveryOrder"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Production": {
+      "get": {
+        "tags": [
+          "Production"
+        ],
+        "summary": "Retrieves a list of records in PRODUCTION status",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Production"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Production"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Production"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Production/{productionUuid}": {
+      "put": {
+        "tags": [
+          "Production"
+        ],
+        "summary": "Updates production with new info",
+        "parameters": [
+          {
+            "name": "productionUuid",
+            "in": "path",
+            "description": "UUID of the production",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "production with updated information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Production"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Production"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Production"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "If production is null or does not match productionUuid"
+          },
+          "404": {
+            "description": "If production matching productionUuid does not exist"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddonItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id of the addon order item",
+            "format": "int32",
+            "example": 1
+          },
+          "orderDeliveryId": {
+            "type": "integer",
+            "description": "Id of the delivery order this addon item is in",
+            "format": "int32",
+            "example": 1
+          },
+          "addonItemName": {
+            "type": "string",
+            "description": "Name of the addon item",
+            "example": "Duck Bone Broth"
+          },
+          "addonItemQty": {
+            "type": "integer",
+            "description": "Quantity of the addon item",
+            "format": "int32",
+            "example": 1
+          }
+        },
+        "additionalProperties": false,
+        "description": "An addon order item for a delivery order"
+      },
+      "DeliveryOrder": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Delivery Order Id",
+            "format": "int32",
+            "example": 1
+          },
+          "docNo": {
+            "type": "string",
+            "description": "Long delivery order number",
+            "example": "DO-220302-000001-SG"
+          },
+          "productionUuid": {
+            "type": "string",
+            "description": "UUID of the production",
+            "example": "a49265b6-8f27-4c54-b5c9-480a45b381ba"
+          },
+          "petName": {
+            "type": "string",
+            "description": "Name of pet",
+            "example": "Gizmo"
+          },
+          "packInGram": {
+            "type": "number",
+            "description": "Weight check of meal pack in grams",
+            "format": "double",
+            "example": 188
+          },
+          "mealPackQty": {
+            "type": "integer",
+            "description": "Quantity of meal packs",
+            "format": "int32",
+            "example": 14
+          },
+          "meatType": {
+            "type": "string",
+            "description": "Type of meat",
+            "example": "Chicken"
+          },
+          "meatGramPerPack": {
+            "type": "number",
+            "description": "Weight of meat per pack in grams",
+            "format": "double",
+            "example": 100
+          },
+          "kidneyName": {
+            "type": "string",
+            "description": "Name of kidney",
+            "nullable": true,
+            "example": "Rabbit Kidney"
+          },
+          "kidneyGramTotal": {
+            "type": "number",
+            "description": "Total weight of kidney in grams. If kidney name is null, weight should be 0",
+            "format": "double",
+            "example": 62
+          },
+          "liverName": {
+            "type": "string",
+            "description": "Name of liver",
+            "nullable": true,
+            "example": "Rabbit Liver"
+          },
+          "liverGramTotal": {
+            "type": "number",
+            "description": "Total weight of liver in grams. If liver name is null, weight should be 0",
+            "format": "double",
+            "example": 62
+          },
+          "boneName": {
+            "type": "string",
+            "description": "Name of bone",
+            "nullable": true,
+            "example": "DM-Shank"
+          },
+          "boneGramTotal": {
+            "type": "number",
+            "description": "Total weight of bone in grams. If bone name is null, weight should be 0",
+            "format": "double",
+            "example": 832
+          },
+          "omegaName": {
+            "type": "string",
+            "description": "Name of omega",
+            "nullable": true,
+            "example": "Barramundi"
+          },
+          "omegaGramTotal": {
+            "type": "number",
+            "description": "Total weight of omega in grams. If omega name is null, weight should be 0",
+            "format": "double",
+            "example": 142
+          },
+          "fibreName": {
+            "type": "string",
+            "description": "Name of fibre",
+            "nullable": true,
+            "example": "Fibre+"
+          },
+          "fibreGramTotal": {
+            "type": "number",
+            "description": "Total weight of fibre in grams. If fibre name is null, weight should be 0",
+            "format": "double",
+            "example": 114
+          },
+          "forageName": {
+            "type": "string",
+            "description": "Name of forage",
+            "nullable": true,
+            "example": "Forage A"
+          },
+          "forageGramTotal": {
+            "type": "number",
+            "description": "Total weight of forage in grams. If forage name is null, weight should be 0",
+            "format": "double",
+            "example": 32
+          },
+          "labelling": {
+            "type": "string",
+            "description": "Labelling information for the delivery order",
+            "nullable": true,
+            "example": "LL"
+          },
+          "foodType": {
+            "type": "string"
+          },
+          "addonItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddonItem"
+            },
+            "description": "List of addon items for the delivery order"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Delivery Order"
+      },
+      "Production": {
+        "type": "object",
+        "properties": {
+          "productionId": {
+            "type": "integer",
+            "description": "Id of the production",
+            "format": "int32",
+            "example": 1
+          },
+          "productionUuid": {
+            "type": "string",
+            "description": "UUID of the production",
+            "example": "a49265b6-8f27-4c54-b5c9-480a45b381ba"
+          },
+          "productionFileName": {
+            "type": "string",
+            "description": "Name of the production file",
+            "example": "202112111231-bombom-production"
+          },
+          "exportDate": {
+            "type": "string",
+            "description": "Date of export for the production file",
+            "format": "date-time"
+          },
+          "orderCount": {
+            "type": "integer",
+            "description": "Number of delivery orders for this production file",
+            "format": "int32",
+            "example": 30
+          },
+          "status": {
+            "type": "integer",
+            "description": "status of the orders (20 = PRODUCTION, 30 = READY_QC, 40 = ASSIGN_DELIVERY)",
+            "format": "int32",
+            "example": 20
+          }
+        },
+        "additionalProperties": false,
+        "description": "Production"
+      }
+    }
+  }
+}
